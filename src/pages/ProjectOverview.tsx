@@ -2,12 +2,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ProfileHeader from "../components/ProfileHeader";
+import { ChartContainer } from "@/components/ui/chart";
+import { Bar, Line, BarChart, LineChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
 const ProjectOverview = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("overview"); // 'overview' or 'kanban'
   
-  // Calendar data
+  // Calendar data with performance indicators
   const currentMonth = "April 2022";
   const daysOfWeek = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
   const dates = [
@@ -16,25 +18,25 @@ const ProjectOverview = () => {
     { day: 29, month: "previous" },
     { day: 30, month: "previous" },
     { day: 31, month: "previous" },
-    { day: 1, month: "current" },
-    { day: 2, month: "current" },
-    { day: 3, month: "current" },
-    { day: 4, month: "current" },
-    { day: 5, month: "current" },
-    { day: 6, month: "current" },
-    { day: 7, month: "current" },
-    { day: 8, month: "current", active: true },
-    { day: 9, month: "current" },
-    { day: 10, month: "current" },
-    { day: 11, month: "current" },
-    { day: 12, month: "current" },
-    { day: 13, month: "current" },
-    { day: 14, month: "current" },
-    { day: 15, month: "current" },
-    { day: 16, month: "current" },
-    { day: 17, month: "current" },
-    { day: 18, month: "current" },
-    { day: 19, month: "current" },
+    { day: 1, month: "current", performance: "medium" }, // yellow
+    { day: 2, month: "current", performance: "good" }, // green
+    { day: 3, month: "current", performance: "good" }, // green
+    { day: 4, month: "current", performance: "poor" }, // red
+    { day: 5, month: "current", performance: "medium" }, // yellow
+    { day: 6, month: "current", performance: "good" }, // green
+    { day: 7, month: "current", performance: "good" }, // green
+    { day: 8, month: "current", active: true, performance: "good" }, // green
+    { day: 9, month: "current", performance: "medium" }, // yellow
+    { day: 10, month: "current", performance: "medium" }, // yellow
+    { day: 11, month: "current", performance: "poor" }, // red
+    { day: 12, month: "current", performance: "good" }, // green
+    { day: 13, month: "current", performance: "good" }, // green
+    { day: 14, month: "current", performance: "medium" }, // yellow
+    { day: 15, month: "current", performance: "good" }, // green
+    { day: 16, month: "current", performance: "good" }, // green
+    { day: 17, month: "current", performance: "medium" }, // yellow
+    { day: 18, month: "current", performance: "good" }, // green
+    { day: 19, month: "current", performance: "poor" }, // red
     { day: 20, month: "current" },
     { day: 21, month: "current" },
     { day: 22, month: "current" },
@@ -86,6 +88,36 @@ const ProjectOverview = () => {
     }
   ];
 
+  // Monthly performance data for charts
+  const monthlyPerformanceData = [
+    { month: "Jan", completed: 32, total: 40, efficiency: 80 },
+    { month: "Feb", completed: 28, total: 38, efficiency: 74 },
+    { month: "Mar", completed: 36, total: 42, efficiency: 86 },
+    { month: "Apr", completed: 30, total: 45, efficiency: 67 },
+    { month: "May", completed: 42, total: 48, efficiency: 88 },
+    { month: "Jun", completed: 38, total: 50, efficiency: 76 },
+  ];
+
+  // Task performance data
+  const taskPerformanceData = [
+    { category: "Research", onTime: 12, delayed: 3, efficiency: 80 },
+    { category: "Design", onTime: 8, delayed: 1, efficiency: 89 },
+    { category: "Development", onTime: 15, delayed: 4, efficiency: 79 },
+    { category: "Testing", onTime: 10, delayed: 2, efficiency: 83 },
+    { category: "Deployment", onTime: 5, delayed: 0, efficiency: 100 },
+  ];
+
+  const getPerformanceClass = (performance?: string) => {
+    if (!performance) return "";
+    
+    switch(performance) {
+      case "good": return "border-green-500";
+      case "medium": return "border-yellow-500";
+      case "poor": return "border-red-500";
+      default: return "";
+    }
+  };
+
   const handleKanbanClick = () => {
     navigate('/kanban');
   };
@@ -99,7 +131,7 @@ const ProjectOverview = () => {
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        {/* Calendar */}
+        {/* Calendar with Performance Indicators */}
         <div className="calendar">
           <div className="calendar-header">
             <h2 className="text-xl font-semibold">{currentMonth}</h2>
@@ -127,11 +159,29 @@ const ProjectOverview = () => {
             {dates.map((date, index) => (
               <div 
                 key={index} 
-                className={`calendar-day ${date.month !== 'current' ? 'text-gray-400' : ''} ${date.active ? 'active' : ''}`}
+                className={`calendar-day ${date.month !== 'current' ? 'text-gray-400' : ''} 
+                  ${date.active ? 'active' : ''} 
+                  ${date.performance ? 'border-2' : ''} 
+                  ${getPerformanceClass(date.performance)}`}
               >
                 {date.day}
               </div>
             ))}
+          </div>
+          
+          <div className="mt-4 flex items-center justify-center space-x-8">
+            <div className="flex items-center">
+              <div className="w-3 h-3 rounded-full border-2 border-green-500 mr-2"></div>
+              <span className="text-sm">Good Performance</span>
+            </div>
+            <div className="flex items-center">
+              <div className="w-3 h-3 rounded-full border-2 border-yellow-500 mr-2"></div>
+              <span className="text-sm">Medium Performance</span>
+            </div>
+            <div className="flex items-center">
+              <div className="w-3 h-3 rounded-full border-2 border-red-500 mr-2"></div>
+              <span className="text-sm">Poor Performance</span>
+            </div>
           </div>
         </div>
         
@@ -178,6 +228,54 @@ const ProjectOverview = () => {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </div>
+      
+      {/* Monthly Performance Analysis */}
+      <div className="mb-8">
+        <h2 className="text-xl font-semibold mb-4">Monthly Performance Analysis</h2>
+        <div className="bg-white p-4 rounded-lg shadow">
+          <div className="h-80">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={monthlyPerformanceData}
+                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="completed" name="Tasks Completed" fill="#82ca9d" />
+                <Bar dataKey="total" name="Total Tasks" fill="#8884d8" />
+                <Line type="monotone" dataKey="efficiency" name="Efficiency %" stroke="#ff7300" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </div>
+      
+      {/* Task Performance Analysis */}
+      <div className="mb-8">
+        <h2 className="text-xl font-semibold mb-4">Task Performance Analysis</h2>
+        <div className="bg-white p-4 rounded-lg shadow">
+          <div className="h-80">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={taskPerformanceData}
+                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="category" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="onTime" name="Tasks On Time" fill="#4CAF50" />
+                <Bar dataKey="delayed" name="Tasks Delayed" fill="#F44336" />
+                <Line type="monotone" dataKey="efficiency" name="Efficiency %" stroke="#2196F3" />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
         </div>
       </div>

@@ -1,7 +1,35 @@
 
+import { useState } from "react";
 import ProfileHeader from "../components/ProfileHeader";
 
 const Tasks = () => {
+  // Task state management
+  const [taskStates, setTaskStates] = useState<{[key: number]: 'not_started' | 'in_progress' | 'paused' | 'completed'}>({});
+
+  // Handle start task
+  const handleStartTask = (taskId: number) => {
+    setTaskStates(prev => ({
+      ...prev,
+      [taskId]: 'in_progress'
+    }));
+  };
+
+  // Handle pause task
+  const handlePauseTask = (taskId: number) => {
+    setTaskStates(prev => ({
+      ...prev,
+      [taskId]: 'paused'
+    }));
+  };
+
+  // Handle submit task
+  const handleSubmitTask = (taskId: number) => {
+    setTaskStates(prev => ({
+      ...prev,
+      [taskId]: 'completed'
+    }));
+  };
+
   // Task data
   const taskGroups = [
     {
@@ -124,6 +152,59 @@ const Tasks = () => {
     }
   };
 
+  // Render task action buttons based on task state
+  const renderTaskActions = (taskId: number) => {
+    const taskState = taskStates[taskId] || 'not_started';
+    
+    if (taskState === 'completed') {
+      return (
+        <div className="flex items-center ml-2">
+          <span className="text-green-600 font-medium">Completed</span>
+        </div>
+      );
+    }
+    
+    return (
+      <div className="flex items-center space-x-2 ml-2">
+        {(taskState === 'not_started' || taskState === 'paused') && (
+          <button 
+            onClick={(e) => {
+              e.stopPropagation();
+              handleStartTask(taskId);
+            }}
+            className="bg-green-500 text-white px-3 py-1 rounded text-sm"
+          >
+            Start
+          </button>
+        )}
+        
+        {taskState === 'in_progress' && (
+          <>
+            <button 
+              onClick={(e) => {
+                e.stopPropagation();
+                handlePauseTask(taskId);
+              }}
+              className="bg-yellow-500 text-white px-3 py-1 rounded text-sm"
+            >
+              Pause
+            </button>
+            
+            <button 
+              onClick={(e) => {
+                e.stopPropagation();
+                handleSubmitTask(taskId);
+              }}
+              className="bg-blue-500 text-white px-3 py-1 rounded text-sm"
+            >
+              Submit
+            </button>
+          </>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div>
       <ProfileHeader />
@@ -176,6 +257,8 @@ const Tasks = () => {
                     </div>
                   )}
                 </div>
+                
+                {renderTaskActions(task.id)}
               </div>
             ))}
           </div>
