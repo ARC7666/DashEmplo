@@ -7,6 +7,7 @@ import Tasks from "./pages/Tasks";
 import ProjectOverview from "./pages/ProjectOverview";
 import Report from "./pages/Report";
 import KanbanView from "./pages/KanbanView";
+import HRDashboard from "./pages/HRDashboard";
 import Sidebar from "./components/Sidebar";
 import AddTaskModal from "./components/AddTaskModal";
 
@@ -33,6 +34,7 @@ const App = () => {
             <Route path="/project-overview" element={<ProjectOverview />} />
             <Route path="/kanban" element={<KanbanView />} />
             <Route path="/report" element={<Report />} />
+            <Route path="/hr-dashboard" element={<HRDashboard />} />
           </Routes>
         </main>
         {showAddTaskModal && <AddTaskModal onClose={handleCloseAddTaskModal} />}
