@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Calendar from "./pages/Calendar";
@@ -11,7 +11,7 @@ import Sidebar from "./components/Sidebar";
 import AddTaskModal from "./components/AddTaskModal";
 
 const App = () => {
-  const [showAddTaskModal, setShowAddTaskModal] = useState(false);
+  const [showAddTaskModal, setShowAddTaskModal] = React.useState(false);
 
   const handleOpenAddTaskModal = () => {
     setShowAddTaskModal(true);
