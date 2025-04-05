@@ -10,6 +10,7 @@ import KanbanView from "./pages/KanbanView";
 import HRDashboard from "./pages/HRDashboard";
 import Sidebar from "./components/Sidebar";
 import AddTaskModal from "./components/AddTaskModal";
+import { Toaster } from "@/components/ui/toaster";
 
 const App = () => {
   const [showAddTaskModal, setShowAddTaskModal] = React.useState(false);
@@ -24,9 +25,9 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <div className="app">
+      <div className="app flex min-h-screen bg-gray-50">
         <Sidebar handleOpenAddTaskModal={handleOpenAddTaskModal} />
-        <main className="main-content">
+        <main className="main-content flex-1 p-4 overflow-auto">
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/calendar" element={<Calendar />} />
@@ -38,6 +39,7 @@ const App = () => {
           </Routes>
         </main>
         {showAddTaskModal && <AddTaskModal onClose={handleCloseAddTaskModal} />}
+        <Toaster />
       </div>
     </BrowserRouter>
   );
