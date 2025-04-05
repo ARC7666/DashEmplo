@@ -51,7 +51,7 @@ const HRDashboard = () => {
       employeeId: 1,
       employeeName: "John Doe",
       name: "Finish monthly reporting", 
-      date: "April 8, 2022", 
+      date: "April 8, 2025", 
       status: "completed", 
       priority: "high",
       tag: "research"
@@ -61,7 +61,7 @@ const HRDashboard = () => {
       employeeId: 2,
       employeeName: "Jane Smith",
       name: "UX research results", 
-      date: "April 8, 2022", 
+      date: "April 8, 2025", 
       status: "completed", 
       priority: "high",
       tag: "design"
@@ -71,7 +71,7 @@ const HRDashboard = () => {
       employeeId: 3,
       employeeName: "Mark Johnson",
       name: "API integration", 
-      date: "April 8, 2022", 
+      date: "April 8, 2025", 
       status: "completed", 
       priority: "medium",
       tag: "development"
@@ -81,7 +81,7 @@ const HRDashboard = () => {
       employeeId: 4,
       employeeName: "Sara Williams",
       name: "Sprint planning", 
-      date: "April 10, 2022", 
+      date: "April 10, 2025", 
       status: "completed", 
       priority: "low",
       tag: "management"
